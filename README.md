@@ -3,6 +3,7 @@ Plateforme / application web de recrutement .
 # Contexte du projet
 Dans le Cadre de son développement, le cabinet MyRH souhaite simplifier la recherche d'emploi pour toutes les marocaines et marocains, pour cela il vous demande de créer une application web qui sera utilisée par les recruteurs et les chercheurs d'emploi.
 
+
 Chaque recruteur est une société caractérisée par un identifiant, login, mot de passe, adresse, email, numéro de téléphone et une image qui va être affichée sur chaque offre d'emploi crée par cette société.
 
 l'inscription est valable seulement pour les sociétés, chaque inscription passe obligatoirement par un code de validation valable 3 min pour la confirmation de son inscription via un email/sms
