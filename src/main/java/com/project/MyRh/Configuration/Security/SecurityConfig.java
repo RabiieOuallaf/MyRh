@@ -27,10 +27,11 @@ public class SecurityConfig {
 
     private static final String[] WHITE_LIST_URL = {
             "POST", "/api/auth/**",
-//            "GET", "api/companies/**",
-//            "GET", "api/offers/**",
+            "/api/companies/**",
+            "/api/offers/**",
             "/api/applications/**",
-            "/api/subscriptions/**"
+            "/api/subscriptions/**",
+            "/api/stripe/**"
     };
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -45,9 +46,8 @@ public class SecurityConfig {
                                 .requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
                                 .requestMatchers("/api/admin/**").hasAnyAuthority(ADMIN.name())
-                                .requestMatchers("/api/companies/**").hasAnyAuthority(ADMIN.name(), COMPANY.name(), APPLICANT.name())
-                                .requestMatchers("/api/offers/**").hasAnyAuthority(COMPANY.name(), APPLICANT.name())
-                                .requestMatchers("/api/applications/**").hasAnyAuthority(APPLICANT.name(),COMPANY.name())
+//                                .requestMatchers("/api/companies/**").hasAnyAuthority(ADMIN.name(), COMPANY.name(), APPLICANT.name())
+//                                .requestMatchers("/api/offers/**").hasAnyAuthority(COMPANY.name(), APPLICANT.name()).requestMatchers("/api/applications/**").hasAnyAuthority(APPLICANT.name(),COMPANY.name())
                                 .anyRequest()
                                 .authenticated()
                 )

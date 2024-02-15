@@ -26,6 +26,5 @@ public class ApplicantDto {
     private String experience;
     @NotBlank
     private String education;
-    @NotEmpty
     private String Resume;
 }

@@ -30,6 +30,5 @@ public class JobOfferDto {
     @NotEmpty
     private ContractType contractType;
     @NotEmpty
-    @JsonIgnore
     private Company company;
 }

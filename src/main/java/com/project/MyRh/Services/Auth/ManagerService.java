@@ -60,6 +60,7 @@ public class ManagerService {
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
+
                 )
         );
         var user = managerRepository.findByEmail(request.getEmail())

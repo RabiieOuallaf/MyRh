@@ -46,12 +46,14 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
+        String name = userDetails.getUsername();
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         String role = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         extraClaims.put("role", role);
+        extraClaims.put("name", name);
 
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }

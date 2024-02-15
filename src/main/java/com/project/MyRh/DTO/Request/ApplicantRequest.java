@@ -25,7 +25,6 @@ public class ApplicantRequest {
     private String experience;
     @NotBlank
     private String education;
-    @NotBlank
     private String Resume;
 
     public Applicant toModel(){

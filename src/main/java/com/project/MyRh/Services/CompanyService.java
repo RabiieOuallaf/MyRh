@@ -81,4 +81,8 @@ public class CompanyService {
     public Company updateOffersCounter(Company company){
         return company != null ? companyRepository.save(company) : null;
     }
+
+    public CompanyDto getByEmail(String companyEmail) {
+        return companyRepository.findByEmail(companyEmail) != null ? companyMapper.mapTo(companyRepository.findByEmail(companyEmail)) : null;
+    }
 }

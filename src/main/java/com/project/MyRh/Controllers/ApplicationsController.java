@@ -1,6 +1,7 @@
 package com.project.MyRh.Controllers;
 
 import com.project.MyRh.DTO.ApplicationsDto;
+import com.project.MyRh.DTO.Request.ApplicationToUpdate;
 import com.project.MyRh.DTO.Request.ApplicationsRequest;
 import com.project.MyRh.Services.ApplicationsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,17 @@ public class ApplicationsController {
         return applicationsService.findByJobOffer(jobOffer_id);
     }
 
+    @GetMapping("/company/{companyName}")
+    public List<ApplicationsDto> findApplicationsByCompanyName(@PathVariable String companyName){
+        return applicationsService.findByApplicationsCompanyName(companyName);
+    }
     @PostMapping()
     public ApplicationsDto saveApplication(@RequestBody ApplicationsRequest applicationsRequest){
         return applicationsService.save(applicationsRequest);
     }
 
-    @PutMapping
-    public ApplicationsDto changeApplicationStatus(@RequestBody(required = false) ApplicationsRequest applicationsRequest,@RequestParam String status){
-        return applicationsService.changeApplicationStatus(applicationsRequest,status);
+    @PutMapping()
+    public ApplicationsDto changeApplicationStatus(@RequestBody ApplicationToUpdate applicationToUpdate){
+        return applicationsService.changeApplicationStatus(applicationToUpdate);
     }
 }

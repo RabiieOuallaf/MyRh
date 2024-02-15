@@ -1,14 +1,19 @@
 package com.project.MyRh.Services;
 
 
+import com.project.MyRh.DTO.ApplicantDto;
 import com.project.MyRh.DTO.ApplicationsDto;
+import com.project.MyRh.DTO.CompanyDto;
+import com.project.MyRh.DTO.JobOfferDto;
 import com.project.MyRh.DTO.Request.ApplicantRequest;
+import com.project.MyRh.DTO.Request.ApplicationToUpdate;
 import com.project.MyRh.DTO.Request.ApplicationsRequest;
 import com.project.MyRh.Exceptions.Exception.AlreadyExisting;
 import com.project.MyRh.Exceptions.Exception.NotFound;
 import com.project.MyRh.Exceptions.Exception.OperationFailed;
 import com.project.MyRh.Mappers.Mapper;
 import com.project.MyRh.Models.Entities.Applications;
+import com.project.MyRh.Models.Entities.Company;
 import com.project.MyRh.Repositories.ApplicationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,12 +27,21 @@ import java.util.Optional;
 public class ApplicationsService {
     private final ApplicationsRepository applicationsRepository;
     private final ApplicantService applicantService;
+    private final CompanyService companyService;
+    private final JobOfferService jobOfferService;
     private final Mapper<Applications, ApplicationsDto> jobApplicantsMapper;
     @Autowired
-    public ApplicationsService(ApplicationsRepository applicationsRepository, ApplicantService applicantService, Mapper<Applications, ApplicationsDto> jobApplicantsMapper) {
+    public ApplicationsService(ApplicationsRepository applicationsRepository,
+                               CompanyService companyService,
+                               ApplicantService applicantService,
+                               JobOfferService jobOfferService,
+                               Mapper<Applications, ApplicationsDto> jobApplicantsMapper)
+    {
         this.applicationsRepository = applicationsRepository;
         this.applicantService = applicantService;
         this.jobApplicantsMapper = jobApplicantsMapper;
+        this.companyService = companyService;
+        this.jobOfferService = jobOfferService;
 
     }
 
@@ -48,6 +62,24 @@ public class ApplicationsService {
         Optional<Applications> application = applicationsRepository.findByApplicant_IdAndJobOffer_Id(applicant_id, jobOffer_id);
         return application.map(jobApplicantsMapper::mapTo).orElse(null);
     }
+
+    public List<ApplicationsDto> findByApplicationsCompanyName(String companyEmail) {
+        CompanyDto foundCompany = companyService.getByEmail(companyEmail);
+        CompanyDto companyDto = companyService.getByName(foundCompany.getName());
+        if(companyDto != null){
+            List<JobOfferDto> jobOffersDto = jobOfferService.findJobOfferByCompanyId(companyDto.getId());
+            if(jobOffersDto.size() > 0){
+                List<ApplicationsDto> applicationsDto = applicationsRepository.findByJobOffer_Id(jobOffersDto.get(0).getId()).stream().map(jobApplicantsMapper::mapTo).toList();
+                return applicationsDto;
+            }
+        }
+        if (companyDto != null) {
+        } else {
+            throw new NotFound("Company not found");
+        }
+        return null;
+    }
+
 
     public boolean isApplicationExisting(Integer applicant_id, Integer jobOffer_id){
         return findByApplicant_IdAndJobOffer_Id(applicant_id, jobOffer_id) != null;
@@ -98,18 +130,15 @@ public class ApplicationsService {
 
     }
 
-    public ApplicationsDto changeApplicationStatus(ApplicationsRequest applicationsRequest, String status) {
+    public ApplicationsDto changeApplicationStatus(ApplicationToUpdate applicationsRequest) {
         ApplicationsDto existingApplication = findByApplicant_IdAndJobOffer_Id(
                 applicationsRequest.getApplicant_id(),
                 applicationsRequest.getJobOffer_id()
         );
 
         if (existingApplication != null) {
-            // Found the application, update the status
             Applications application = jobApplicantsMapper.mapFrom(existingApplication);
-            System.out.println("The Application before: " + application + " the status: " + status);
-            application.setStatus(status);
-            System.out.println("The Application after: " + application);
+            application.setStatus(applicationsRequest.getStatus());
 
             return jobApplicantsMapper.mapTo(applicationsRepository.save(application));
         } else {

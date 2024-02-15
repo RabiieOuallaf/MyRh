@@ -18,6 +18,8 @@ public class ApplicantController {
     public ApplicantController(ApplicantService applicantService) {this.applicantService = applicantService;}
     @GetMapping
     public List<ApplicantDto> getAll(){return applicantService.getAll();}
+
     @PostMapping
     public ApplicantDto saveApplicant(@RequestBody @NotNull ApplicantRequest applicantRequest){return applicantService.saveApplicant(applicantRequest);}
+
 }

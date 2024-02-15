@@ -54,6 +54,7 @@ public class CompanyController {
 
     @PostMapping("/auth")
     public CompanyDto authentication(@RequestBody AuthRequest authRequest){
+        System.out.println((authRequest));
         System.out.println("==============");
         System.out.println(authRequest);
         System.out.println("==============");

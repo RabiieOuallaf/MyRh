@@ -12,6 +12,7 @@ import com.project.MyRh.Repositories.JobOfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +95,21 @@ public class JobOfferService {
             return company.getOffersCounter();
         }else {
             throw new NotFound("Couldn't find the company by its id !");
+        }
+    }
+
+    public List<JobOfferDto> findJobOfferByCompanyId(Integer id) {
+        List<JobOffer> jobOffers = jobOfferRepository.findJobOfferByCompany_Id(id);
+        List<JobOfferDto> jobOfferDtos = new ArrayList<>();
+
+        if (!jobOffers.isEmpty()) {
+            for (JobOffer jobOffer : jobOffers) {
+                JobOfferDto jobOfferDto = jobOfferMapper.mapTo(jobOffer);
+                jobOfferDtos.add(jobOfferDto);
+            }
+            return jobOfferDtos;
+        } else {
+            throw new NotFound("No Job Offer Found for Company with id: " + id);
         }
     }
 

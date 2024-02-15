@@ -22,7 +22,6 @@ public class ApplicationsRequest {
     private String email;
     @NotEmpty
     private Integer phone;
-    @NotEmpty
     private String Resume;
 
     public Applications toModel(){
