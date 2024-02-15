@@ -9,6 +9,7 @@ l'inscription est valable seulement pour les sociétés, chaque inscription pass
 
 pour ajouter une offre d'emploi la société doit fournir un titre pour cette annonce, une description détaillée, le profil recherché(exemple: développement web, comptabilité...), la ville, le niveau d'étude ( exemple: Bac+2, Bac+3...) pour le salaire reste facultatif pour l'ajouter
 
+
 Chaque offre d'emploi ajoutée par une société est soumise à la validation par un seul Agent (déjà crée dans le système du cabinet MyRH, il peut accépter ou refuser l'offre, un email est envoyé par la suite à la société
 
 vous pourvez s'inspirer du site marocannonces pour l'affichage des offres d'emploi
